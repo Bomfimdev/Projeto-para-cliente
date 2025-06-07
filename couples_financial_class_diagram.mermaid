@@ -1,0 +1,76 @@
+classDiagram
+    class User {
+        +string id
+        +string email
+        +string full_name
+        +string? avatar_url
+        +string created_at
+    }
+
+    class SharedAccount {
+        +string id
+        +string name
+        +string owner_id
+        +string[] member_ids
+        +string created_at
+        +string updated_at
+        +addMember(email: string)
+        +removeMember(userId: string)
+    }
+
+    class Transaction {
+        +string id
+        +string account_id
+        +string user_id
+        +TransactionType type
+        +number amount
+        +string category
+        +string description
+        +string date
+        +string created_at
+        +string updated_at
+    }
+
+    class AuthService {
+        +signIn(email: string, password: string)
+        +signUp(email: string, password: string, fullName: string)
+        +signOut()
+        +getCurrentUser()
+    }
+
+    class TransactionService {
+        +getTransactions(accountId: string, filters?: TransactionFilters)
+        +createTransaction(data: CreateTransactionDTO)
+        +updateTransaction(id: string, data: UpdateTransactionDTO)
+        +deleteTransaction(id: string)
+        +subscribeToTransactions(accountId: string, callback: Function)
+    }
+
+    class AccountService {
+        +getSharedAccounts()
+        +createSharedAccount(data: CreateAccountDTO)
+        +addMember(accountId: string, email: string)
+        +removeMember(accountId: string, userId: string)
+    }
+
+    class AppStore {
+        +User? user
+        +SharedAccount? currentAccount
+        +Transaction[] transactions
+        +TransactionFilters filters
+        +setUser(user: User)
+        +setCurrentAccount(account: SharedAccount)
+        +addTransaction(transaction: Transaction)
+        +updateTransaction(id: string, data: Partial~Transaction~)
+        +setFilters(filters: Partial~TransactionFilters~)
+    }
+
+    User "1" -- "*" SharedAccount : owns
+    SharedAccount "1" -- "*" Transaction : contains
+    User "1" -- "*" Transaction : creates
+    AuthService -- User : manages
+    TransactionService -- Transaction : manages
+    AccountService -- SharedAccount : manages
+    AppStore -- User : stores
+    AppStore -- SharedAccount : stores
+    AppStore -- Transaction : stores

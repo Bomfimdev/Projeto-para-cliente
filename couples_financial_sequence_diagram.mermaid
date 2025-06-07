@@ -1,0 +1,42 @@
+sequenceDiagram
+    participant U as User
+    participant F as Frontend (React)
+    participant A as AuthService
+    participant T as TransactionService
+    participant S as Supabase
+    participant DB as Database
+
+    %% Authentication Flow
+    U->>F: Enter credentials
+    F->>A: signIn(email, password)
+    A->>S: supabase.auth.signInWithPassword()
+    S->>DB: Validate credentials
+    DB-->>S: Return user data
+    S-->>A: Return session
+    A-->>F: Return authenticated user
+    F->>F: Update auth state
+
+    %% Load Initial Data
+    F->>T: getTransactions(accountId)
+    T->>S: supabase.from('transactions').select()
+    S->>DB: Query transactions
+    DB-->>S: Return transactions
+    S-->>T: Return data
+    T-->>F: Update UI
+
+    %% Real-time Updates
+    F->>S: Subscribe to changes
+    S->>S: Listen for changes
+    DB-->>S: Database change
+    S-->>F: Real-time update
+    F->>F: Update UI
+
+    %% Create Transaction
+    U->>F: Submit transaction form
+    F->>T: createTransaction(data)
+    T->>S: supabase.from('transactions').insert()
+    S->>DB: Insert transaction
+    DB-->>S: Confirm insert
+    S-->>T: Return new transaction
+    T-->>F: Update UI
+    F->>F: Show success message

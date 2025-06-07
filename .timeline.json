@@ -1,0 +1,86 @@
+{
+  "timeline_index": 32,
+  "planner": {
+    "Team Leader": {
+      "1": {
+        "task_id": "1",
+        "dependent_task_ids": [],
+        "instruction": "Create a detailed PRD for the financial control system for couples, including user stories, wireframes, and technical requirements. Key features include: user authentication, shared accounts management, transaction tracking (income/expenses), categorization, dashboard with charts, and responsive design.",
+        "task_type": "general",
+        "code": "",
+        "result": "",
+        "is_success": false,
+        "is_finished": true,
+        "assignee": "Emma",
+        "start_at": 1749263297.0623882,
+        "end_at": 1749263377.7028244
+      },
+      "current_task_id": "3",
+      "2": {
+        "task_id": "2",
+        "dependent_task_ids": [
+          "1"
+        ],
+        "instruction": "Design the software architecture, including frontend structure (React/TypeScript/Tailwind), backend integration (Spring Boot/PostgreSQL), and Supabase configuration for authentication and real-time data sync. Reference PRD at '/absolute/path/to/financial-control-system/docs/prd.json'.",
+        "task_type": "general",
+        "code": "",
+        "result": "",
+        "is_success": false,
+        "is_finished": true,
+        "assignee": "Bob",
+        "start_at": 1749263377.7028542,
+        "end_at": 1749263463.6492815
+      },
+      "3": {
+        "task_id": "3",
+        "dependent_task_ids": [
+          "2"
+        ],
+        "instruction": "Implement the financial control system using React, TypeScript, and Tailwind CSS. Follow the provided HTML/CSS template and integrate with Supabase for backend services. Follow the architecture design at '/absolute/path/to/financial-control-system/docs/architecture.json'.",
+        "task_type": "general",
+        "code": "",
+        "result": "",
+        "is_success": false,
+        "is_finished": false,
+        "assignee": "Alex",
+        "start_at": 1749263463.6493227
+      }
+    }
+  },
+  "gallery_last_file": {},
+  "timeline_status": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 1,
+    "10": 1,
+    "11": 1,
+    "12": 1,
+    "13": 1,
+    "15": 1,
+    "16": 1,
+    "17": 1,
+    "18": 1,
+    "19": 1,
+    "20": 1,
+    "21": 1,
+    "22": 1,
+    "23": 1,
+    "24": 1,
+    "25": 1,
+    "26": 1,
+    "27": 1,
+    "28": 1,
+    "29": 1,
+    "30": 0,
+    "31": 1,
+    "32": 1
+  },
+  "preview_servers": {},
+  "deploy": {}
+}
