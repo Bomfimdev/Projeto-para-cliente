@@ -1,60 +1,68 @@
 // src/pages/LoginPage.tsx
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { useNavigate } from 'react-router-dom'
-import { Card } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { useAuth } from '@/hooks/useAuth'
-import { AiOutlineHeart } from 'react-icons/ai'
 
-interface LoginForm {
-  email: string
-  password: string
-}
+const loginSchema = z.object({
+  email: z.string().email('Invalid email format'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+})
+
+type LoginFormData = z.infer<typeof loginSchema>
 
 export function LoginPage() {
-  const { signIn } = useAuth()
   const navigate = useNavigate()
-  const { register, handleSubmit } = useForm<LoginForm>()
+  const { signIn } = useAuth()
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  })
 
-  const onSubmit = async (data: LoginForm) => {
+  const onSubmit = async (data: LoginFormData) => {
     try {
-      await signIn(data.email, data.password)
+      await signIn(data)
       navigate('/dashboard')
     } catch (error) {
-      console.error('Error signing in:', error)
+      console.error('Login failed:', error)
     }
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
-      <Card className="w-[400px] p-6">
-        <div className="flex flex-col items-center mb-6">
-          <AiOutlineHeart className="h-12 w-12 text-primary mb-2" />
-          <h1 className="text-2xl font-bold text-primary">Controle Financeiro</h1>
-        </div>
-
+      <div className="w-full max-w-md p-8 space-y-6 bg-card rounded-lg shadow-lg">
+        <h1 className="text-2xl font-bold text-center text-foreground">Login</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <Input
-              {...register('email')}
               type="email"
               placeholder="Email"
+              {...register('email')}
+              className={errors.email ? 'border-destructive' : ''}
             />
+            {errors.email && (
+              <p className="text-sm text-destructive">{errors.email.message}</p>
+            )}
           </div>
           <div className="space-y-2">
             <Input
-              {...register('password')}
               type="password"
-              placeholder="Senha"
+              placeholder="Password"
+              {...register('password')}
+              className={errors.password ? 'border-destructive' : ''}
             />
+            {errors.password && (
+              <p className="text-sm text-destructive">{errors.password.message}</p>
+            )}
           </div>
           <Button type="submit" className="w-full">
-            Entrar
+            Sign In
           </Button>
         </form>
-      </Card>
+      </div>
     </div>
   )
 }
